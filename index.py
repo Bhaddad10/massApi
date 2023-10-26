@@ -51,5 +51,10 @@ def get_data():
         return jsonify({"error": "Erro na requisição", "status_code": response.status_code})
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
+
 if __name__ == '__main__':
     app.run()
