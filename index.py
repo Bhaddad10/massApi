@@ -23,13 +23,13 @@ params = {"sql": sql_query}
 
 
 def fix_encoding(record):
-    # Função para corrigir a codificação dos campos
+
     for key, value in record.items():
         if isinstance(value, str):
             try:
                 record[key] = value.encode('latin-1').decode('utf-8')
             except:
-                pass  # Ignore erros de codificação
+                pass
 
     return record
 
@@ -41,19 +41,12 @@ def get_data():
         data = response.json()
         records = data["result"]["records"]
 
-        # Corrija a codificação dos campos em cada registro
         fixed_records = [fix_encoding(record) for record in records]
-        # print(fixed_records)
-        # Use jsonify com o argumento 'indent' para formatar o JSON e defina Content-Type como UTF-8
+
         return jsonify(fixed_records), 200, {'Content-Type': 'application/json; charset=utf-8'}
 
     else:
         return jsonify({"error": "Erro na requisição", "status_code": response.status_code})
-
-
-@app.route('/favicon.ico')
-def favicon():
-    return '', 204
 
 
 if __name__ == '__main__':
