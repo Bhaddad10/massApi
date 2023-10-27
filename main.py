@@ -23,24 +23,13 @@ sql_query = """
 params = {"sql": sql_query}
 
 
-def fix_encoding(record):
-    for key, value in record.items():
-        if isinstance(value, str):
-            try:
-                record[key] = value.encode('latin-1').decode('utf-8')
-            except:
-                pass
-    return record
-
-
 @app.route('/distribuidorasInfo')
 def get_data():
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
         records = data["result"]["records"]
-        fixed_records = [fix_encoding(record) for record in records]
-        return jsonify(fixed_records), 200, {'Content-Type': 'application/json; charset=utf-8'}
+        return jsonify(records), 200, {'Content-Type': 'application/json; charset=utf-8'}
     else:
         return jsonify({"error": "Erro na requisição", "status_code": response.status_code})
 
